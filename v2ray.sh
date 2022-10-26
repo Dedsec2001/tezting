@@ -59,33 +59,26 @@ cat << EOF > /usr/local/etc/xray/config.json
 
         {
 
-            "listen": "0.0.0.0",
-
-            "port": 80,
-
-            "protocol": "vmess",
-
-            "settings": {
-
-                "clients": [
-
-                    {
-
-                        "id": ""
-
-                    }
-
-                ]
-
-            },
-
-            "streamSettings": {
-
-                "network": "ws",
-
-                "security": "none"
-
-            }
+            {
+      "port": 80,
+      "listen": "127.0.0.1",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [
+          {
+            "id": "ac477b09-9d17-41e0-9572-accc2198e650",
+            "level": 0,
+            "email": "love@example.com"
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "none",
+        "wsSettings": {
+          "acceptProxyProtocol": true,
+          "path": "/vmessws"
+        }
 
         }
 
