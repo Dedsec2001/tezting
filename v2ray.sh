@@ -10,7 +10,7 @@ apt install ufw
 
 #firewall rules
 ufw allow 'OpenSSH'
-ufw allow 443/tcp
+
 ufw allow 80/tcp
 ufw enable
 
@@ -22,71 +22,95 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
 
 rm -rf /usr/local/etc/xray/config.json
 cat << EOF > /usr/local/etc/xray/config.json
+
 {
-  "log": {
-    "loglevel": "warning"
-  },
-  "routing": {
-    "domainStrategy": "AsIs",
-    "rules": [
-      {
-        "type": "field",
-        "ip": [
-          "geoip:private"
-        ],
-        "outboundTag": "block"
-      }
-    ]
-  },
-  "inbounds": [
-    {
-      "port": 443,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "certificates": [
+
+    "log": {
+
+        "loglevel": "warning"
+
+    },
+
+    "routing": {
+
+        "domainStrategy": "AsIs",
+
+        "rules": [
+
             {
-              "certificateFile": "/etc/xray/xray.crt",
-              "keyFile": "/etc/xray/xray.key"
+
+                "type": "field",
+
+                "ip": [
+
+                    "geoip:private"
+
+                ],
+
+                "outboundTag": "block"
+
             }
-          ]
+
+        ]
+
+    },
+
+    "inbounds": [
+
+        {
+
+            "listen": "0.0.0.0",
+
+            "port": 80,
+
+            "protocol": "vmess",
+
+            "settings": {
+
+                "clients": [
+
+                    {
+
+                        "id": ""
+
+                    }
+
+                ]
+
+            },
+
+            "streamSettings": {
+
+                "network": "ws",
+
+                "security": "none"
+
+            }
+
         }
-      }
-    },
-    {
-      "port": 80,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          {
-            "id": "6fb7b05b-3da1-44b6-bd4c-ca13abb4f632"
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "security": "none"
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "tag": "direct"
-    },
-    {
-      "protocol": "blackhole",
-      "tag": "block"
-    }
-  ]
+
+    ],
+
+    "outbounds": [
+
+        {
+
+            "protocol": "freedom",
+
+            "tag": "direct"
+
+        },
+
+        {
+
+            "protocol": "blackhole",
+
+            "tag": "block"
+
+        }
+
+    ]
+
 }
 EOF
 
